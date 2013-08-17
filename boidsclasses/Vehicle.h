@@ -52,7 +52,7 @@ public:
 	{
 		id = number++;
 		mass = 1.0f;
-		maxSpeed = 6.0f; //4.0
+		maxSpeed = 4.0f; //4.0
 		maxTrailSize = 30;
 		position.set(ofVec3f(_x, _y, _z));
 	}

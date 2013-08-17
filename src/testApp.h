@@ -44,10 +44,19 @@ public:
     ofVec3f fleefrom; //my var for the boids evading input
     bool runaway;
     vector<SteeredVehicle> boids;
-    vector<ofVec3f>    oldVectors;
-    vector<ofVec3f>    reallyoldVectors; // sillyname
-    vector<ofVec3f>    reallyoldVectors1; // sillyname
-    vector<ofVec3f>    reallyoldVectors2; // sillyname
+    vector<ofVec3f>    oldVectors1;
+    vector<ofVec3f>    oldVectors2; // sillyname
+    vector<ofVec3f>    oldVectors3; // sillyname
+ 
+    /*vector<ofVec3f>    oldVectors4; // sillyname
+    vector<ofVec3f>    oldVectors5; // sillyname
+    vector<ofVec3f>    oldVectors6; // sillyname
+    vector<ofVec3f>    oldVectors7; // sillyname
+    vector<ofVec3f>    oldVectors8; // sillyname
+    vector<ofVec3f>    oldVectors9; // sillyname
+    vector<ofVec3f>    oldVectors10; // sillyname*/
+
+
     
     
     
@@ -62,6 +71,10 @@ public:
     float red, green, blue;
 
     string FPSstring;
+
+    int fadeAmnt;
+    ofFbo rgbaFbo; // with alpha
+
     
 };
 

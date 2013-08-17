@@ -2,14 +2,11 @@
 #include <iostream>
 #include <GLUT/GLUT.h>
 
-
-
-
-
-
 //--------------------------------------------------------------
 void testApp::setup() {
     
+    
+
     
     ofSetLogLevel(OF_LOG_VERBOSE);
 	ofBackground(10, 50, 50);
@@ -29,11 +26,24 @@ void testApp::setup() {
     //ofHideCursor();
     
     boidNum = 200;
-    oldVectors.resize( boidNum );//MY CODE
+    oldVectors1.resize(boidNum);
+    oldVectors2.resize(boidNum);
+    oldVectors3.resize(boidNum);
+   /* oldVectors4.resize(boidNum);
+    oldVectors5.resize(boidNum);
+    oldVectors6.resize(boidNum);
+    oldVectors7.resize(boidNum);
+    oldVectors8.resize(boidNum);
+    oldVectors9.resize(boidNum);
+    oldVectors10.resize(boidNum);
+*/
+    
+    
+    /*oldVectors.resize( boidNum );//MY CODE
     reallyoldVectors.resize ( boidNum );
     reallyoldVectors1.resize ( boidNum );
     reallyoldVectors2.resize ( boidNum );
-
+*/
     
     fleefrom = ofVec3f(0.0,0.0,100.0);
     target = ofVec3f(0, 0, 0);
@@ -75,6 +85,8 @@ void testApp::setup() {
     ofAddListener(gui->newGUIEvent, this, &testApp::guiEvent);
     gui->loadSettings("GUI/guiSettings.xml");
     
+    
+    rgbaFbo.allocate(1400, 768, GL_RGBA);
     
     
 }
@@ -172,12 +184,28 @@ void testApp::update(){
     }
     runaway=FALSE;
     
+    
+
 }
 
 
 //--------------------------------------------------------------
 void testApp::draw(){
     
+  /*
+    
+    ofFill();
+	ofSetColor(255,255,255, 200);
+	ofRect(0,0,1400,800);
+    
+    
+    ofNoFill();
+	ofSetColor(255,255,255);
+    
+    rgbaFbo.draw(0,0);
+   
+    */
+
 //boids code below
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
@@ -185,6 +213,7 @@ void testApp::draw(){
     cam.begin();
     
 	glColor3f(0.1, 0.6, 1);
+    
     
     for (int i = 0; i < boidNum; i++)
     {
@@ -200,21 +229,69 @@ void testApp::draw(){
         
 
         
-        ofLine(boids[i].position.x, boids[i].position.y, boids[i].position.z,oldVectors[i].x, oldVectors[i].y, oldVectors[i].z);
-        ofLine(oldVectors[i].x, oldVectors[i].y, oldVectors[i].z,reallyoldVectors[i].x, reallyoldVectors[i].y, reallyoldVectors[i].z);
-        ofLine(reallyoldVectors[i].x, reallyoldVectors[i].y, reallyoldVectors[i].z,reallyoldVectors1[i].x, reallyoldVectors1[i].y, reallyoldVectors1[i].z);
-        ofLine(reallyoldVectors1[i].x, reallyoldVectors1[i].y, reallyoldVectors1[i].z,reallyoldVectors2[i].x, reallyoldVectors2[i].y, reallyoldVectors2[i].z);
-        
-        
-            glPopMatrix();
-        
-            oldVectors[i]=ofVec3f(boids[i].position.x, boids[i].position.y, boids[i].position.z);//can use old vec plus new vec to get orientation :)
-            reallyoldVectors[i]=ofVec3f(oldVectors[i].x, oldVectors[i].y, oldVectors[i].z);
-        reallyoldVectors1[i]=ofVec3f(reallyoldVectors[i].x, reallyoldVectors[i].y, reallyoldVectors[i].z);
-        reallyoldVectors2[i]=ofVec3f(reallyoldVectors1[i].x, reallyoldVectors1[i].y, reallyoldVectors1[i].z);
-        }
+        ofLine(boids[i].position.x, boids[i].position.y, boids[i].position.z,oldVectors1[i].x, oldVectors1[i].y, oldVectors1[i].z);
+        ofLine(oldVectors1[i].x, oldVectors1[i].y, oldVectors1[i].z,oldVectors2[i].x, oldVectors2[i].y, oldVectors2[i].z);
+        ofLine(oldVectors2[i].x, oldVectors2[i].y, oldVectors2[i].z,oldVectors3[i].x, oldVectors3[i].y, oldVectors3[i].z);
+     
+        /*ofLine(oldVectors3[i].x, oldVectors3[i].y, oldVectors3[i].z,oldVectors4[i].x, oldVectors4[i].y, oldVectors4[i].z);
+        ofLine(oldVectors4[i].x, oldVectors4[i].y, oldVectors4[i].z,oldVectors5[i].x, oldVectors5[i].y, oldVectors5[i].z);
+        ofLine(oldVectors5[i].x, oldVectors5[i].y, oldVectors5[i].z,oldVectors6[i].x, oldVectors6[i].y, oldVectors6[i].z);
+        ofLine(oldVectors6[i].x, oldVectors6[i].y, oldVectors6[i].z,oldVectors7[i].x, oldVectors7[i].y, oldVectors7[i].z);
+        ofLine(oldVectors7[i].x, oldVectors7[i].y, oldVectors7[i].z,oldVectors8[i].x, oldVectors8[i].y, oldVectors8[i].z);
+        ofLine(oldVectors8[i].x, oldVectors8[i].y, oldVectors8[i].z,oldVectors9[i].x, oldVectors9[i].y, oldVectors9[i].z);
+        ofLine(oldVectors9[i].x, oldVectors9[i].y, oldVectors9[i].z,oldVectors10[i].x, oldVectors10[i].y, oldVectors10[i].z);*/
+/*
+ // new iterative code in here for vectors
+  
+  for (int j = 0; j < VecPoints; j++)
+  {
     
-    glPushMatrix();
+      ofLine(boids[i].position.x, boids[i].position.y, boids[i].position.z,PointVectors[j][i].x, PointVectors[j][i].y, PointVectors[j][i].z);
+  
+  ofLine([j][i].x, PointVectors[j][i].y, PointVectors[j][i].z,PointVectors[j+1][i].x, PointVectors[j+1][i].y, PointVectors[j+1][i].z);
+  }
+  
+  glPopMatrix();
+  
+
+  for (int j = 0; j < VecPoints; j++)
+  {
+  PointVectors[j][i]=ofVec3f(PointVectors[j+1][i].x, PointVectors[j+1][i].y, PointVectors[j+1][i].z);
+  }
+  
+   glPushMatrix();
+  
+  */
+        
+          // glPopMatrix();
+    
+    
+        
+            oldVectors1[i]=ofVec3f(boids[i].position.x, boids[i].position.y, boids[i].position.z);
+       
+            oldVectors2[i]=ofVec3f(oldVectors1[i].x, oldVectors1[i].y, oldVectors1[i].z);
+        
+            oldVectors3[i]=ofVec3f(oldVectors2[i].x, oldVectors2[i].y, oldVectors2[i].z);
+
+        
+        /*oldVectors4[i]=ofVec3f(oldVectors3[i].x, oldVectors3[i].y, oldVectors3[i].z);
+
+            oldVectors5[i]=ofVec3f(oldVectors4[i].x, oldVectors4[i].y, oldVectors4[i].z);
+
+            oldVectors6[i]=ofVec3f(oldVectors5[i].x, oldVectors5[i].y, oldVectors5[i].z);
+        
+            oldVectors7[i]=ofVec3f(oldVectors6[i].x, oldVectors6[i].y, oldVectors6[i].z);
+        
+            oldVectors8[i]=ofVec3f(oldVectors7[i].x, oldVectors7[i].y, oldVectors7[i].z);
+        
+            oldVectors9[i]=ofVec3f(oldVectors8[i].x, oldVectors8[i].y, oldVectors8[i].z);
+        
+            oldVectors10[i]=ofVec3f(oldVectors9[i].x, oldVectors9[i].y, oldVectors9[i].z);*/
+    
+    
+    }
+    
+   // glPushMatrix();
     
     
 	
@@ -234,6 +311,9 @@ void testApp::draw(){
     glEnd();
     
     cam.end();
+    
+    
+
 
 }
 
@@ -255,7 +335,7 @@ void testApp::guiEvent(ofxUIEventArgs &e)
     else if(e.widget->getName() == "RED")
 	{
         ofxUISlider *slider = (ofxUISlider *) e.widget;
-        ofSetBackgroundColor((slider->getScaledValue()),0.0,0.0);
+        ofBackground(slider->getScaledValue());
 	}
 	else if(e.widget->getName() == "GREEN")
 	{
